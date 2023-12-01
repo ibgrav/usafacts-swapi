@@ -1,0 +1,3 @@
+import { IncomingMessage, ServerResponse } from "http";
+
+export type Handler = (req: IncomingMessage, res: ServerResponse) => Promise<void>;
