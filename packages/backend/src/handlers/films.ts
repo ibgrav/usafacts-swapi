@@ -18,30 +18,38 @@ export type FilmHandlerStarship = {
   cost_in_credits: number;
 };
 
-// NEED TO DEDUPE STARSHIP FETCHES
 export const filmsHandler = defineHandler<FilmHandlerBody>(async () => {
   const response = await cachedFetchJson<SwapiFilmResponse>(`${SWAPI_URL}/films`);
 
-  // the additional ship data could be fetched on the frontend, but since the requirements of this API
-  // are known (and it's an internal microservice), my preference is to keep logic in the backend
-  const pendingFilmPromises = response.results.map(async (film) => {
-    // map through each starship url and fetch the data to calculate the cost
-    const pendingSharshipPromises = film.starships.map(async (shipUrl) => {
-      // if an error is thrown here, it will be caught by the handler wrapper
-      // and converted into a 500 response - we want all fetches to return ok
-      const ship = await cachedFetchJson<SwapiStarshipResponse>(shipUrl);
+  // set of unique starship URLs - many films contain the same ships, don't want to fetch twice
+  const shipUrls: Set<string> = new Set();
 
-      return {
-        name: ship.name,
-        // NaN filtered out below
-        cost_in_credits: Number(ship.cost_in_credits)
-      } satisfies FilmHandlerStarship;
+  response.results.forEach((film) => {
+    film.starships.forEach((shipUrl) => {
+      // duplicate ship URLs will be filtered out by the Set
+      shipUrls.add(shipUrl);
     });
+  });
 
-    // remove starships that do not have a cost, or cost is not valid number
-    const starships = (await Promise.all(pendingSharshipPromises)).filter(
-      (ship) => ship.cost_in_credits && !isNaN(ship.cost_in_credits)
-    );
+  const pendingSharshipPromises = Array.from(shipUrls).map((shipUrl) => {
+    // the additional ship data could be fetched on the frontend, but since the requirements of this API
+    // are known (and it's an internal microservice), my preference is to keep logic in the backend
+    return cachedFetchJson<SwapiStarshipResponse>(shipUrl);
+  });
+
+  // wait for all starship data to be fetched in parallel
+  const shipData = await Promise.all(pendingSharshipPromises);
+
+  const films = response.results.map((film) => {
+    const starships: FilmHandlerStarship[] = [];
+
+    shipData.forEach((ship) => {
+      const cost = Number(ship.cost_in_credits);
+      // filter out ships that do not have a cost, or cost is not valid number, or this film does not contain the ship
+      if (cost && !isNaN(cost) && film.starships.includes(ship.url)) {
+        starships.push({ name: ship.name, cost_in_credits: cost });
+      }
+    });
 
     return {
       title: film.title,
@@ -51,16 +59,12 @@ export const filmsHandler = defineHandler<FilmHandlerBody>(async () => {
     } satisfies FilmHandlerFilm;
   });
 
-  const body = {
-    films: await Promise.all(pendingFilmPromises)
-  } satisfies FilmHandlerBody;
-
   return {
-    body,
+    body: { films },
     status: 200,
     headers: {
-      // cache for one hour - this data doesn't change often
-      "Cache-Control": "max-age=3600"
+      // cache for one month - this data doesn't change (would need to be confirmed with the API owner)
+      "Cache-Control": "max-age=2592000"
     }
   };
 });

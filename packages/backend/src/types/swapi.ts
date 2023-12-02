@@ -13,6 +13,7 @@ export type SwapiFilmResponse = SwapiPaginatedResponse<{
 }>;
 
 export type SwapiStarshipResponse = {
+  url: string;
   name: string;
   cost_in_credits: string;
 };
