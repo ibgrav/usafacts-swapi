@@ -1,0 +1,18 @@
+.wrapper {
+  color: var(--c-background);
+  background-color: var(--c-text);
+  box-shadow: 0 0 20px 0 var(--c-shadow);
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  font-size: 2rem;
+}

@@ -1,0 +1,21 @@
+:root {
+  --c-text: #242424;
+  --c-background: #eeeeee;
+  --c-shadow: rgba(0, 0, 0, 0.5);
+
+  /* prefer web-safe fonts, improves performance */
+  font-family: Inter, sans-serif, system-ui;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color: var(--c-text);
+  background-color: var(--c-background);
+
+  /* improve readability for high-dpi screens */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+}

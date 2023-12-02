@@ -6,14 +6,23 @@
     "dev": "vite",
     "build": "vite build",
     "test.types": "tsc --noEmit",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "dev.storybook": "sb dev -p 62677 --no-open",
+    "build.storybook": "sb build --webpack-stats-json"
   },
   "dependencies": {
+    "@nivo/bar": "0.84.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "swr": "2.2.4"
+    "react-error-boundary": "4.0.11"
   },
   "devDependencies": {
+    "@storybook/addon-essentials": "7.6.3",
+    "@storybook/addon-interactions": "7.6.3",
+    "@storybook/cli": "7.6.3",
+    "@storybook/react": "7.6.3",
+    "@storybook/react-vite": "7.6.3",
+    "@storybook/test": "7.6.3",
     "@types/react": "18.2.39",
     "@types/react-dom": "18.2.17",
     "@typescript-eslint/eslint-plugin": "6.13.1",
@@ -24,6 +33,6 @@
     "eslint-plugin-react-hooks": "4.6.0",
     "eslint-plugin-react-refresh": "0.4.4",
     "typescript": "5.3.2",
-    "vite": "5.0.4"
+    "vite": "4"
   }
 }
