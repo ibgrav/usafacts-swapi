@@ -32,4 +32,5 @@ jobs:
       - run: pnpm lint
       - run: pnpm -r test.types
       - run: pnpm -F backend test.vitest
+      - run: pnpm exec playwright install # required for storybook testing
       - run: pnpm -F frontend test.storybook
