@@ -3,8 +3,6 @@ import type { ErrorResponse } from "backend/src/types/backend";
 import { FilmHandlerBody } from "backend/src/handlers/films";
 
 const version = "v1";
-// must be set within the .env or into the process env during deployment
-const backendUrl = import.meta.env.VITE_BACKEND_URL + `/api/${version}`;
 
 // if the number of apis grows, this could be organize in a more appropriate manner
 export const useApiFilms = () => useApiFetch<FilmHandlerBody>("films");
@@ -22,7 +20,7 @@ function useApiFetch<T>(path: string) {
       setLoading(true);
 
       try {
-        const res = await fetch(`${backendUrl}/${path}`);
+        const res = await fetch(`/api/${version}/${path}`);
         const data = await res.json();
 
         if (data.error) {
