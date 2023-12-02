@@ -15,10 +15,12 @@ export function CostChart({ films }: CostChartProps) {
           filmTitle: film.title
         };
 
-        film.starships.forEach((ship) => {
-          keys.add(ship.name);
-          filmData[ship.name] = ship.cost_in_credits;
-        });
+        film.starships
+          .sort((a, b) => a.cost_in_credits - b.cost_in_credits)
+          .forEach((ship) => {
+            keys.add(ship.name);
+            filmData[ship.name] = (ship.cost_in_credits / 1_000_000).toPrecision(2);
+          });
 
         return filmData;
       });
@@ -36,13 +38,15 @@ export function CostChart({ films }: CostChartProps) {
 
   return (
     // the height/width could be set from the parent component if needed
-    <div style={{ width: "100%", height: "800px" }}>
+    <div style={{ width: "100%", height: "600px" }}>
+      <select></select>
+
       <ResponsiveBar
         indexBy="filmTitle"
         data={chartData.records}
         keys={chartData.keys}
         // not sure symlog is the correct type - scale of some data is huge
-        valueScale={{ type: "symlog" }}
+        valueScale={{ type: "linear" }}
         padding={0.1}
         margin={{ top: 10, right: 10, bottom: 50, left: 120 }}
         role="application"
@@ -55,7 +59,7 @@ export function CostChart({ films }: CostChartProps) {
         axisLeft={{
           tickSize: 5,
           tickPadding: 5,
-          legend: "Total Ship Credit Cost",
+          legend: "Total Ship Credit Cost (M)",
           legendPosition: "middle",
           legendOffset: -100
         }}

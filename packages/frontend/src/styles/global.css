@@ -1,6 +1,6 @@
 :root {
   --c-text: #242424;
-  --c-background: #eeeeee;
+  --c-background: #efefef;
   --c-shadow: rgba(0, 0, 0, 0.5);
 
   /* prefer web-safe fonts, improves performance */

@@ -18,6 +18,7 @@ export type FilmHandlerStarship = {
   cost_in_credits: number;
 };
 
+// NEED TO DEDUPE STARSHIP FETCHES
 export const filmsHandler = defineHandler<FilmHandlerBody>(async () => {
   const response = await cachedFetchJson<SwapiFilmResponse>(`${SWAPI_URL}/films`);
 
