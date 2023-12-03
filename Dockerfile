@@ -10,23 +10,40 @@ RUN corepack enable && corepack prepare --activate
 RUN pnpm install --frozen-lockfile
 
 # Rebuild the source code only when needed
-FROM base AS builder
+FROM deps AS builder
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+# COPY --from=deps /app/node_modules ./node_modules
+# COPY . .
 # TODO: figure out how to not repeate this
+# RUN corepack enable && corepack prepare --activate
+RUN pnpm build.frontend
+RUN pnpm build.backend
+
+FROM base as proddeps
+WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
 RUN corepack enable && corepack prepare --activate
-RUN pnpm -F frontend build
-RUN pnpm -F backend build
+# only install production dependencies
+RUN pnpm install --frozen-lockfile --prod
+
+# ----- RUNNER -----
 
 FROM base AS runner
+
 WORKDIR /app
+
+# environment variables (could be passed in as well if needed)
 ENV NODE_ENV production
+ENV PORT 8080
+
+# permissions
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 runner
-# TODO: prune dev dependencies to reduce image size
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=builder --chown=runner:nodejs /app/dist .
 USER runner
+
+COPY --from=builder --chown=runner:nodejs /app/dist .
+COPY --from=proddeps /app/node_modules ./node_modules
+
 EXPOSE $PORT
-CMD ["node", "main.js"]
+
+CMD ["node", "backend/main.js"]

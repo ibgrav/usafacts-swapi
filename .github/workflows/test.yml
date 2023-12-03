@@ -29,8 +29,8 @@ jobs:
           restore-keys: ${{ runner.os }}-pnpm-store-
 
       - run: pnpm install --frozen-lockfile
-      - run: pnpm lint
-      - run: pnpm -r test.types
-      - run: pnpm -F backend test.vitest
+      - run: pnpm test.lint
+      - run: pnpm test.types
+      - run: pnpm test.vitest
       - run: pnpm exec playwright install # required for storybook testing
-      - run: pnpm -F frontend test.storybook
+      - run: pnpm test.storybook

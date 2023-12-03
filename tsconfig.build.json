@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+
+  "include": ["backend"],
+  "exclude": ["**/*.test.ts"],
+
+  "compilerOptions": {
+    "outDir": "./dist",
+
+    "lib": ["ES2022"],
+    "target": "ES2022",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+
+    "noEmit": false,
+    "incremental": false
+  }
+}
