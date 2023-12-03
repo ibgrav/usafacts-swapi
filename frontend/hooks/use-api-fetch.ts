@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import type { ErrorResponse } from "../../types/backend";
-import type { FilmHandlerBody } from "../../backend/handlers/films";
+import type { FilmHandlerBody } from "../../backend/handlers/api/v1/films";
 
 export const apiVersion = "v1";
 export const apiUrlPath = `/api/${apiVersion}`;

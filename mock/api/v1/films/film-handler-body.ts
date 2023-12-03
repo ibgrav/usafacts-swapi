@@ -1,4 +1,4 @@
-import { FilmHandlerBody } from "../../../../backend/handlers/films";
+import { FilmHandlerBody } from "../../../../backend/handlers/api/v1/films";
 
 export const mockFilmHandlerBody: FilmHandlerBody = {
   films: [

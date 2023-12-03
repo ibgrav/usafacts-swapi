@@ -1,11 +1,18 @@
+import utils from "../../styles/utils.module.css";
+import styles from "./app.module.css";
+import { CostChart } from "../cost-chart/cost-chart";
 import { Header } from "../header/header";
-import { Main } from "../main/main";
 
 export function App() {
   return (
     <>
-      <Header title="Star Wars Ship Cost Over Time" />
-      <Main />
+      <Header title="Star Wars Starship Cost vs. Episode Number" />
+
+      <div className={utils.container}>
+        <main className={styles.main}>
+          <CostChart />
+        </main>
+      </div>
     </>
   );
 }
