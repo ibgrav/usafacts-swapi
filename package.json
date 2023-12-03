@@ -13,7 +13,7 @@
     "build.storybook": "sb build --webpack-stats-json",
     "test": "pnpm run --parallel \"/^test..*/\"",
     "test.types": "tsc --noEmit",
-    "test.vitest": "vitest",
+    "test.vitest": "vitest run",
     "test.lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "test.storybook": "tsx bin/test-storybook.ts",
     "preview.storybook": "sirv --host --quiet --port 6006 storybook-static"
