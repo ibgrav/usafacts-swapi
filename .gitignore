@@ -5,5 +5,8 @@ node_modules
 dist
 storybook-static
 
-*.env*
 *.log*
+*.tsbuildinfo*
+
+*.env*
+!.env.example
