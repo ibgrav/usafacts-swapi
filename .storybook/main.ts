@@ -2,7 +2,8 @@ import { StorybookConfig } from "@storybook/react-vite";
 
 const config: StorybookConfig = {
   stories: ["../frontend/**/*.stories.@(ts|tsx)"],
-  staticDirs: ["../public", "./public-dev"],
+  // public-dev is for storybook-only public assets (such as msw or mocks)
+  staticDirs: ["../public", "./public"],
   addons: ["@storybook/addon-essentials", "@storybook/addon-interactions"],
   framework: "@storybook/react-vite",
   core: {

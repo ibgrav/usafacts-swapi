@@ -12,8 +12,8 @@ export async function urlToFile(url: string, data: unknown) {
 
   const paths = path.split("/");
   const filename = paths.pop();
-
   const dir = join(process.cwd(), "mock", ...paths);
+
   await mkdir(dir, { recursive: true });
   await writeFile(`${dir}/${filename}.json`, JSON.stringify(data, null, 2), "utf-8");
 }

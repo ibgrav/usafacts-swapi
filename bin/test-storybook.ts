@@ -6,6 +6,8 @@ testStorybook().catch((error) => {
   exit(1);
 });
 
+// storybook needs to be built, the static assets need to be served, and then the tests can run
+// this could probably be a bash script, but TypeScript works fine I think
 async function testStorybook() {
   const processes: ProcessPromise[] = [];
 

@@ -1,12 +1,13 @@
 import { ErrorResponse, Handler, ServerRoute } from "../../types/backend";
 import { PORT } from "./constants";
 
+// create a higher-order function to define an error-safe handler
 export function defineHandler<T>(handler: Handler<T>): ServerRoute {
   return async (req, res) => {
     try {
       // For Prod: could add protocol and host to URL
       const url = new URL(req.url || "", `http://localhost:${PORT}`);
-
+      // possible to extend handler options in the future (like headers, cookies, query, .etc)
       const { status, headers, body } = await handler({ url });
 
       res.statusCode = status;
@@ -27,6 +28,7 @@ export function defineHandler<T>(handler: Handler<T>): ServerRoute {
         res.end(JSON.stringify(body));
       }
     } catch (error) {
+      // should standardize error handling to avoid leaking sensitive data and match consistent logging format
       console.error("handler error", error);
 
       const message: ErrorResponse = { error: "internal server error" };

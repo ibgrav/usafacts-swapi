@@ -11,6 +11,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+// this should probably be a constant somewhere else
 const title = "Star Wars Starship Cost vs. Episode Number";
 
 export const _default: Story = {
