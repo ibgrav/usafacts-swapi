@@ -5,6 +5,7 @@ import { createRoot } from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
 import { App } from "./components/app/app";
 
+// defined in index.html
 const root = document.getElementById("root") as HTMLDivElement;
 
 createRoot(root).render(

@@ -6,7 +6,7 @@ import { Header } from "../header/header";
 export function App() {
   return (
     <>
-      <Header title="Star Wars Starship Cost vs. Episode Number" />
+      <Header title="Starship Credit Cost vs. Episode Number" />
 
       <div className={utils.container}>
         <main className={styles.main}>

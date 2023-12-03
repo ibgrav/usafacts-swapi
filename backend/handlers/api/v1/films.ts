@@ -1,7 +1,7 @@
+import type { SwapiFilmResponse, SwapiStarshipResponse } from "../../../../types/swapi";
 import { cachedFetchJson } from "../../../lib/cached-fetch-json";
 import { SWAPI_URL } from "../../../lib/constants";
 import { defineHandler } from "../../../lib/handler";
-import { SwapiFilmResponse, SwapiStarshipResponse } from "../../../../types/swapi";
 
 export type FilmHandlerBody = {
   films: Array<FilmHandlerFilm>;
@@ -18,6 +18,9 @@ export type FilmHandlerStarship = {
   cost_in_credits: number;
 };
 
+// not ideal how many uncached fetches happen on first load
+// this would be solved with a distributed cache like Redis
+// or maybe warming the cache on deployment
 export const filmsHandler = defineHandler<FilmHandlerBody>(async () => {
   /*
     Instead of fetching all films then looping through each film and collecting the startship data, 
@@ -39,14 +42,14 @@ export const filmsHandler = defineHandler<FilmHandlerBody>(async () => {
     });
   });
 
-  const pendingSharshipPromises = Array.from(shipUrls).map((shipUrl) => {
+  const pendingStarshipPromises = Array.from(shipUrls).map((shipUrl) => {
     // the additional ship data could be fetched on the frontend, but since the requirements of this API
     // are known (and it's an internal microservice), my preference is to keep logic in the backend
     return cachedFetchJson<SwapiStarshipResponse>(shipUrl);
   });
 
   // wait for all starship data to be fetched in parallel
-  const shipData = await Promise.all(pendingSharshipPromises);
+  const shipData = await Promise.all(pendingStarshipPromises);
 
   const films = response.results.map((film) => {
     const starships: FilmHandlerStarship[] = [];

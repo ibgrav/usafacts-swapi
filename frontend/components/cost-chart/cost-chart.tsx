@@ -17,8 +17,10 @@ const valueScales: ValueScale[] = ["linear", "log", "symlog", "point", "band", "
 export function CostChart() {
   const [maxCredit, setMaxCredit] = useState<number>(0);
   const [valueScale, setValueScale] = useState<ValueScale>("symlog");
+
   const { loading, data, error } = useApiFilms();
 
+  // use memo so that we are only looping thruogh the data when it changes
   const chartData = useMemo(() => {
     // need to better handle what is shown when api does not return data
     if (data?.films) {
@@ -77,6 +79,7 @@ export function CostChart() {
             The chart below shows the total cost of starships for each Star Wars film, in millions of credits, listed
             chronologically by the episode number (not the release date). We can observe that cost of starships peaked
             significantly in episode 4, A New Hope, due to the overwhelming cost of the Death Star (1,000,000,000,000 credits).
+            In conclusion, spending on starships has not gone down over time.
           </p>
 
           <div className={styles["form-box"]}>
@@ -85,7 +88,7 @@ export function CostChart() {
               {/* 
                   added a select to demonstrate a controled form element in React
                   but also because I truly don't know the best way to visualize this data
-            */}
+               */}
               <select
                 id="chart-valuescale-select"
                 value={valueScale}
@@ -96,7 +99,7 @@ export function CostChart() {
                 ))}
               </select>
             </form>
-
+            {/* setting a max credit to avoid the death star helps to see the rest of the data */}
             <form className={styles.form}>
               <label htmlFor="chart-max-credit">Max Credits (M)</label>
               <input
@@ -113,7 +116,9 @@ export function CostChart() {
             <div style={{ width: "900px", height: "600px" }}>
               <ErrorBoundary fallbackRender={Loading}>
                 <Suspense>
-                  {/* todo for prod: this chart isn't super mobile-friendly. ideally figure out a better way to display data on small screens. */}
+                  {/* todo for prod: this chart isn't super mobile-friendly.
+                      ideally figure out a better way to display data on small screens than just scroll
+                  */}
                   <ResponsiveBar
                     indexBy="filmTitle"
                     data={chartData.records}

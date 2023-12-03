@@ -1,5 +1,6 @@
 Dockerfile
 .dockerignore
+.eslintrc.cjs
 node_modules
 README.md
 .next

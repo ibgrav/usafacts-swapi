@@ -16,7 +16,7 @@ function useApiFetch<T>(path: string) {
   const [loading, setLoading] = useState<boolean>();
 
   const fetchApi = useCallback(async () => {
-    // only fetch if we don't have data, error or we are not already loading
+    // only fetch if we don't have data, error, or we are not already loading
     if (loading !== true && !data && !error) {
       setLoading(true);
 

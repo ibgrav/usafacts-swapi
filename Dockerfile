@@ -1,27 +1,36 @@
 # Ref: https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
+
 FROM node:20 AS base
 
-# Install dependencies only when needed
+# ----- DEPS -----
+
 FROM base AS deps
+
 WORKDIR /app
+
 COPY . .
+
 # use node.js corepack to install pnpm (based on packageVersion in package.json)
 RUN corepack enable && corepack prepare --activate
 RUN pnpm install --frozen-lockfile
 
-# Rebuild the source code only when needed
+# ----- BUILDER -----
+
 FROM deps AS builder
+
 WORKDIR /app
-# COPY --from=deps /app/node_modules ./node_modules
-# COPY . .
-# TODO: figure out how to not repeate this
-# RUN corepack enable && corepack prepare --activate
+
 RUN pnpm build.frontend
 RUN pnpm build.backend
 
+# ----- PROD DEPS -----
+
 FROM base as proddeps
+
 WORKDIR /app
+
 COPY package.json pnpm-lock.yaml ./
+
 RUN corepack enable && corepack prepare --activate
 # only install production dependencies
 RUN pnpm install --frozen-lockfile --prod

@@ -6,5 +6,6 @@ type ClassNameValue = string | number | boolean | undefined | null;
  */
 export function cn(...classNames: Array<ClassNameValue>) {
   // this will strip out empty strings and 0 - could check for that if necessary
+  // could be more efficient, but rarely have more than a couple classNames
   return classNames.filter((name) => Boolean(name)).join(" ");
 }

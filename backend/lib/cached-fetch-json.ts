@@ -27,6 +27,7 @@ export async function cachedFetchJson<T = unknown>(url: string, options?: Reques
       //  - for local development, could use a file-based cache to avoid re-fetching data on restart
       //  - if the data is highly stable (not changing at all), writing local json blobs at build time could greatly improve performance
       const cacheData = cache.get(cacheKey);
+      console.log("cached-fetch-json CACHED OK", url);
       if (cacheData) return cacheData as T;
     }
 
@@ -36,12 +37,6 @@ export async function cachedFetchJson<T = unknown>(url: string, options?: Reques
     console.log("cached-fetch-json REQUEST", url);
 
     const api = await fetch(url, options);
-
-    const contentType = api.headers.get("Content-Type") || api.headers.get("content-type");
-    // For Prod: handle non-JSON responses and response with appropriate status code (422 Unprocessable Entity)
-    const isJsonContent = contentType?.includes("application/json");
-    if (!isJsonContent) throw new Error(`Expected JSON response ${url}`);
-
     // Possible error thrown during fetch or json - will be caught by try/catch and bubbled up
     const data = (await api.json()) as T;
 
@@ -51,7 +46,6 @@ export async function cachedFetchJson<T = unknown>(url: string, options?: Reques
     }
 
     const timing = ((performance.now() - timestamp) / 1000).toPrecision(2);
-
     console.log("cached-fetch-json RESPONSE", api.statusText, `${timing}s`, url);
 
     return data;
