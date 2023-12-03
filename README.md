@@ -46,3 +46,4 @@
 - Add better linting
 - Add more documentation
 - Add convention tooling through commit hooks
+- Ideally there are branch-based previews that build when a PR is opened for true CI testing
