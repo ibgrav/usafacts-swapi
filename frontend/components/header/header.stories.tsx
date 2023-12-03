@@ -11,7 +11,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const title = "Star Wars Ship Cost Over Time";
+const title = "Star Wars Starship Cost vs. Episode Number";
 
 export const _default: Story = {
   args: {

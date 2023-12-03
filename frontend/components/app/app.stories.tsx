@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { Main } from "./main";
+import { App } from "./app";
 
 const meta = {
-  title: "Components/Main",
-  component: Main
-} satisfies Meta<typeof Main>;
+  title: "Components/App",
+  component: App
+} satisfies Meta<typeof App>;
 
 export default meta;
 
