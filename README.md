@@ -1,10 +1,10 @@
 # USAFacts SWAPI
 
-### Production CDN URL [swapi.isaac.works](https://swapi.isaac.works)
+### Production CDN URL [usafacts.isaac.works](https://usafacts.isaac.works)
 
 ### Production Container URL [usafacts-swapi-production.up.railway.app](https://usafacts-swapi-production.up.railway.app/)
 
-### Production Storybook URL [storybook-swapi.isaac.works](https://storybook-swapi.isaac.works)
+### Production Storybook URL [usafacts-storybook.isaac.works](https://usafacts-storybook.isaac.works)
 
 ## Overview
 
